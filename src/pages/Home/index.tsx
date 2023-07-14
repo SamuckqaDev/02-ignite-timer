@@ -8,18 +8,43 @@ import {
   StartCountdownButton,
   TaskInput,
 } from './styles'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as zod from 'zod'
+
+const newCycleFormValidationSchema = zod.object({
+  task: zod.string().min(1, 'Informe a tarefa'),
+  minutesAmout: zod
+    .number()
+    .min(5, 'O ciclo mínimo deve ser de 5 minutos.')
+    .max(60, 'O ciclo máximo deve ser de 60 minutos.'),
+})
 
 export function Home() {
+  const { register, handleSubmit, watch, formState } = useForm({
+    resolver: zodResolver(newCycleFormValidationSchema),
+  })
+
+  console.log(formState.errors)
+
+  const taskWatched = watch('task')
+  const isSubmitDisaled = !taskWatched
+
+  function doSubmit(data: any) {
+    console.log(data)
+  }
+
   return (
     <HomeContainer>
-      <form action="">
+      <form onSubmit={handleSubmit(doSubmit)} action="">
         <FormContainer>
           <label htmlFor="task">Vou trabalhar em</label>
           <TaskInput
             id="task"
             type="text"
-            placeholder="Dê um nome para seu projeto"
             list="task-suggestions"
+            placeholder="Dê um nome para seu projeto"
+            {...register('task')}
           />
 
           <datalist id="task-suggestions">
@@ -37,6 +62,7 @@ export function Home() {
             step={5}
             min={5}
             max={60}
+            {...register('munitesAmout', { valueAsNumber: true })}
           />
 
           <span>minutos.</span>
@@ -50,7 +76,7 @@ export function Home() {
           <span>0</span>
         </CountdonwContainer>
 
-        <StartCountdownButton type="submit">
+        <StartCountdownButton disabled={isSubmitDisaled} type="submit">
           <Play size={24} />
           Começar
         </StartCountdownButton>
