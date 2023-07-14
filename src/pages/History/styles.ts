@@ -40,6 +40,7 @@ export const HistoryList = styled.div`
         padding-right: 1.5rem;
       }
     }
+
     td {
       background: ${(props) => props.theme['gray-700']};
       border-top: 4px solid ${(props) => props.theme['gray-800']};
@@ -55,5 +56,28 @@ export const HistoryList = styled.div`
         padding-right: 1.5rem;
       }
     }
+  }
+`
+const STATUS_COLORS = {
+  yellow: 'yellow-500',
+  green: 'green-500',
+  red: 'red-500',
+}
+
+type StatusProps = {
+  statusColor: keyof typeof STATUS_COLORS
+}
+
+export const Status = styled.span<StatusProps>`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &::before {
+    content: '';
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    border-radius: 9999px;
+    background: ${(props) => props.theme[STATUS_COLORS[props.statusColor]]};
   }
 `
