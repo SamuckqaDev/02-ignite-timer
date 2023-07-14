@@ -6,5 +6,5 @@ type ThemeType = typeof defaultTheme
 
 // This create a defaltTheme module
 declare module 'styled-components' {
-  export type DefaultTheme = ThemeType
+  export interface DefaultTheme = ThemeType {}
 }
